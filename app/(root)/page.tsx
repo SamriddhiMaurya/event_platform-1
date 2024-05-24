@@ -11,14 +11,20 @@ export default async function Home({ searchParams }: SearchParamProps) {
   const page = Number(searchParams?.page) || 1;
   const searchText = (searchParams?.query as string) || '';
   const category = (searchParams?.category as string) || '';
+   
+    let events = { data: [], totalPages: 1 };
 
-  const events = await getAllEvents({
-    query: searchText,
-    category,
-    page,
-    limit: 6
-  })
-
+    try {
+      events = await getAllEvents({
+        query: searchText,
+        category,
+        page,
+        limit: 6,
+      });
+    } catch (error) {
+      console.error("Error fetching events:", error);
+      // Optionally, you could handle the error state in your UI
+    }
   return (
     <>
       <section className="bg-primary-50 bg-dotted-pattern bg-contain py-5 md:py-10">
